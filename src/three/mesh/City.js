@@ -6,6 +6,7 @@ import modifyCityMaterial from "../modify/modifyCityMaterial";
 import FLyLine from "./FlyLine";
 import FlyLineShader from "./FlyLineShader";
 import MeshLine from "./MeshLine";
+import LightWall from "./LightWall";
 
 export default function createCity() {
   const gltfLoader = new GLTFLoader();
@@ -22,11 +23,11 @@ export default function createCity() {
         item.material = cityMaterial;
 
         modifyCityMaterial(item);
-        console.log(item.name);
       }
       if (item.name === "Layerbuildings") {
         let lineMesh = new MeshLine(item.geometry);
         scene.add(lineMesh.mesh);
+
         const scaleSize = item.scale.x * 1.001;
         lineMesh.mesh.scale.set(scaleSize, scaleSize, scaleSize);
       }
@@ -41,7 +42,10 @@ export default function createCity() {
       { x: 0, y: 0, z: 0 },
       { x: -10, y: 0, z: 0 }
     );
-
     scene.add(flyLineShader.mesh);
+
+    // 添加光墙
+    const lightWall = new LightWall({ x: 10, y: 0, z: -10 });
+    scene.add(lightWall.mesh);
   });
 }
