@@ -5,6 +5,7 @@ import scene from "../scene";
 import modifyCityMaterial from "../modify/modifyCityMaterial";
 import FLyLine from "./FlyLine";
 import FlyLineShader from "./FlyLineShader";
+import MeshLine from "./MeshLine";
 
 export default function createCity() {
   const gltfLoader = new GLTFLoader();
@@ -21,6 +22,13 @@ export default function createCity() {
         item.material = cityMaterial;
 
         modifyCityMaterial(item);
+        console.log(item.name);
+      }
+      if (item.name === "Layerbuildings") {
+        let lineMesh = new MeshLine(item.geometry);
+        scene.add(lineMesh.mesh);
+        const scaleSize = item.scale.x * 1.001;
+        lineMesh.mesh.scale.set(scaleSize, scaleSize, scaleSize);
       }
     });
 
@@ -33,7 +41,7 @@ export default function createCity() {
       { x: 0, y: 0, z: 0 },
       { x: -10, y: 0, z: 0 }
     );
-    
+
     scene.add(flyLineShader.mesh);
   });
 }
