@@ -24,13 +24,44 @@ export default class FlyLineShader {
     // 根据点生成几何体
     this.geometry = new THREE.BufferGeometry().setFromPoints(points);
 
+    // 设置点的大小
+    let pointSizeList = new Float32Array(points.length);
+    for (let i = 0; i < points.length; i++) {
+      pointSizeList[i] = i;
+    }
+    this.geometry.setAttribute(
+      "aSize",
+      new THREE.BufferAttribute(pointSizeList, 1)
+    );
+
     // 创建着色器材质
     this.shaderMaterial = new THREE.ShaderMaterial({
       vertexShader: vertex,
       fragmentShader: fragment,
+      uniforms: {
+        uTime: {
+          value: 0,
+        },
+        uColor: {
+          value: new THREE.Color(0xff00ff),
+        },
+        uLength: {
+          value: points.length
+        }
+      },
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
     });
 
     // 创建点mesh
     this.mesh = new THREE.Points(this.geometry, this.shaderMaterial);
+
+    gsap.to(this.shaderMaterial.uniforms.uTime, {
+      value: 1000,
+      duration: 3,
+      ease: "none",
+      repeat: -1,
+    });
   }
 }

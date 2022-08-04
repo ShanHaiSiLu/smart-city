@@ -34,7 +34,7 @@ scene.add(camera);
 camera.lookAt(scene.position);
 
 // 场景中添加辅助坐标轴
-scene.add(axesHelper);
+// scene.add(axesHelper);
 
 // 创建物体
 createMesh();

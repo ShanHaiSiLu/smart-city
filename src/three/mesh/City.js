@@ -33,7 +33,7 @@ export default function createCity() {
       { x: 0, y: 0, z: 0 },
       { x: -10, y: 0, z: 0 }
     );
-    console.log(flyLineShader)
+    
     scene.add(flyLineShader.mesh);
   });
 }
