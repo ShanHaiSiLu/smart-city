@@ -9,7 +9,7 @@ export default class LightWall {
     this.geometry = new THREE.CylinderGeometry(5, 5, 5, 32, 32, true);
     // 计算边界矩形
     this.geometry.computeBoundingBox();
-    console.log(this.geometry.boundingBox);
+    
     let {
       max: { y: yt },
       min: { y: yb },
