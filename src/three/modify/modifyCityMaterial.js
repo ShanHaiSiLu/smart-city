@@ -137,7 +137,7 @@ export function addSpread(shader) {
     float spreadIndex = - lengthByTime * lengthByTime + uSpreadWidth;
     
     if(spreadIndex > 0.0) {
-      gl_FragColor = mix(gl_FragColor, vec4(1.0, 0.0, 0.0, 1.0), spreadIndex/uSpreadWidth);
+      gl_FragColor = mix(gl_FragColor, vec4(0.4666, 0.8784, 0.9216, 1.0), spreadIndex/uSpreadWidth);
     }
     // #end#
     `
@@ -318,7 +318,7 @@ export function addToTop(shader) {
     float ToTopIndex = - ToTopByTime * ToTopByTime + uToTopWidth;
 
     if(ToTopIndex > 0.0) {
-      gl_FragColor = mix(gl_FragColor, vec4(1.0, 0.8, 0.5, 1.0), ToTopIndex/uToTopWidth);
+      gl_FragColor = mix(gl_FragColor, vec4(0.4588, 0.6078, 0.9373, 1.0), ToTopIndex/uToTopWidth);
     }
     // #end#
     `

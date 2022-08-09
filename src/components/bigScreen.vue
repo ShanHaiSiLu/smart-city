@@ -20,7 +20,11 @@
             <span>事件列表</span>
           </h3>
           <ul>
-            <li v-for="(item, i) in props.eventList">
+            <li
+              v-for="(item, i) in props.eventList"
+              :class="{ active: listNum == i }"
+              @click="toggleActive(i)"
+            >
               <h1>
                 <div>
                   <img class="icon" :src="imgs[item.name]" />
@@ -38,7 +42,9 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
+import eventHub from "@/utils/eventHub";
+
 const props = defineProps(["dataInfo", "eventList"]);
 
 const imgs = {
@@ -50,6 +56,25 @@ const imgs = {
 const toFixInt = (num) => {
   return num.toFixed(0);
 };
+
+// 响应报警图标的点击事件
+let listNum = ref(null);
+eventHub.on("alarmClick", ({ num, info }) => {
+  listNum.value = num;
+});
+
+// 数据变动时取消激活
+watch(
+  () => props.eventList,
+  () => (listNum.value = null)
+);
+
+// 点击列表切换激活的项
+function toggleActive(i) {
+  listNum.value = i;
+
+  eventHub.emit("toggleActive", i);
+}
 </script>
 
 <style scoped>

@@ -20,7 +20,7 @@ import renderer from "@/three/renderer";
 // 导入辅助坐标轴
 import axesHelper from "@/three/axesHelper";
 // 导入控制器
-// import controls from "@/three/controls";
+import controls from "@/three/controls";
 // 导入创建物体
 import createMesh from "@/three/createMesh";
 // 导入帧动画
@@ -30,17 +30,19 @@ import AlarmSprite from "@/three/mesh/AlarmSprite";
 import LightWall from "@/three/mesh/LightWall";
 import FlyLineShader from "@/three/mesh/FlyLineShader";
 import LightRadar from "@/three/mesh/LightRadar";
+import eventHub from "@/utils/eventHub";
 
 // 事件列表
 const props = defineProps(["eventList"]);
-const tagList = [];
+let tagList = [];
 watch(
   () => props.eventList,
   (newVal) => {
     // 清空之前的图标
     tagList.forEach((item) => item.remove());
+    tagList = [];
 
-    newVal.forEach((item) => {
+    newVal.forEach((item, i) => {
       const posiiton = {
         x: item.position.x / 5 - 10,
         z: item.position.y / 5 - 10,
@@ -48,19 +50,38 @@ watch(
       // 创建新报警图标
       const alarmSprite = new AlarmSprite(posiiton, item.name);
       scene.add(alarmSprite.mesh);
+      alarmSprite.Index = i;
       tagList.push(alarmSprite);
       alarmSprite.onClick((e) => {
-        console.log(
-          `%c  $报警回调 `,
-          "font-size:13px; background:skyblue; color:red;"
-        );
+        eventHub.emit("alarmClick", { num: i, info: item });
       });
 
       // 将报警类型映射为各种图标
-      if (mapFn[item.name]) mapFn[item.name](posiiton);
+      if (mapFn[item.name]) mapFn[item.name](posiiton, i);
     });
   }
 );
+
+eventHub.on("toggleActive", (num) => {
+  tagList.forEach((item) => {
+    if (item.Index == num) {
+      item.mesh.visible = true;
+    } else {
+      item.mesh.visible = false;
+    }
+  });
+  let _cur = tagList.find((i) => i.Index == num).mesh;
+
+  let _poi = [_cur.position.x, 0, _cur.position.z];
+  // controls.target.set(..._poi);
+
+  gsap.to(controls.target, {
+    x: _poi[0],
+    y: 0,
+    z: _poi[2],
+    duration: 1
+  })
+});
 
 // 场景元素div
 let sceneDiv = ref(null);
@@ -83,12 +104,13 @@ onMounted(() => {
 // 映射函数，将不同类型的报警映射为不同类型的图表
 // 火警创建光墙，治安使用飞线，电力使用雷达
 const mapFn = {
-  火警: (position) => {
+  火警: (position, i) => {
     let lightWall = new LightWall(1, 3, position);
     scene.add(lightWall.mesh);
+    lightWall.Index = i;
     tagList.push(lightWall);
   },
-  治安: (position) => {
+  治安: (position, i) => {
     let color = new THREE.Color(
       Math.random(),
       Math.random(),
@@ -102,9 +124,10 @@ const mapFn = {
       0.3
     );
     scene.add(flyLineShader.mesh);
+    flyLineShader.Index = i;
     tagList.push(flyLineShader);
   },
-  电力: (position) => {
+  电力: (position, i) => {
     let color = new THREE.Color(
       Math.random(),
       Math.random(),
@@ -112,6 +135,7 @@ const mapFn = {
     ).getHex();
     const lightRadar = new LightRadar(Math.random() * 2 + 1, position, color);
     scene.add(lightRadar.mesh);
+    lightRadar.Index = i;
     tagList.push(lightRadar);
   },
 };
