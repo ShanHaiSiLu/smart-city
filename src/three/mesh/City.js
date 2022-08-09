@@ -36,39 +36,39 @@ export default function createCity() {
     });
 
     // 添加飞线
-    const flyLine = new FLyLine({ x: 0, y: 0, z: 0 }, { x: 10, y: 0, z: 0 });
-    scene.add(flyLine.mesh);
+    // const flyLine = new FLyLine({ x: 0, y: 0, z: 0 }, { x: 10, y: 0, z: 0 });
+    // scene.add(flyLine.mesh);
 
     // 添加着色器飞线
-    const flyLineShader = new FlyLineShader(
-      { x: 0, y: 0, z: 0 },
-      { x: -10, y: 0, z: 0 }
-    );
-    scene.add(flyLineShader.mesh);
+    // const flyLineShader = new FlyLineShader(
+    //   { x: 0, y: 0, z: 0 },
+    //   { x: -10, y: 0, z: 0 }
+    // );
+    // scene.add(flyLineShader.mesh);
 
     // 添加光墙
-    const lightWall = new LightWall({ x: 10, y: 0, z: -10 });
-    scene.add(lightWall.mesh);
+    // const lightWall = new LightWall({ x: 10, z: -10 });
+    // scene.add(lightWall.mesh);
 
-    // 添加雷达
-    const lightRadar = new LightRadar({ x: -11, y: 0, z: 8 });
-    scene.add(lightRadar.mesh);
+    // // 添加雷达
+    // const lightRadar = new LightRadar({ x: -11, y: 0, z: 8 });
+    // scene.add(lightRadar.mesh);
 
     // 添加警告标识
-    const alarmAprite = new AlarmSprite({ x: 3.5, y: 4.7, z: 10 });
-    scene.add(alarmAprite.mesh);
-    alarmAprite.onClick((e) => {
-      console.log("参数为：", e);
-      console.log(
-        `%c  $报警 `,
-        "font-size:13px; background:pink; color:#bf2c9f;"
-      );
-    });
-    alarmAprite.onClick((e) => {
-      console.log(
-        `%c  $报警回调2 `,
-        "font-size:13px; background:skyblue; color:red;"
-      );
-    });
+    // const alarmAprite = new AlarmSprite({ x: 3.5, z: 10 });
+    // scene.add(alarmAprite.mesh);
+    // alarmAprite.onClick((e) => {
+    //   console.log("参数为：", e);
+    //   console.log(
+    //     `%c  $报警 `,
+    //     "font-size:13px; background:pink; color:#bf2c9f;"
+    //   );
+    // });
+    // alarmAprite.onClick((e) => {
+    //   console.log(
+    //     `%c  $报警回调2 `,
+    //     "font-size:13px; background:skyblue; color:red;"
+    //   );
+    // });
   });
 }

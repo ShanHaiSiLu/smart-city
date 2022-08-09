@@ -1,6 +1,7 @@
 #define PI 3.1415926
 
 uniform float uTime;
+uniform vec3 uColor;
 
 varying vec2 vUv;
 
@@ -23,5 +24,5 @@ void main() {
     float strength = (angle + PI) / (PI * 2.0);
 
     // 通过以上参数计算出一个根据角度渐变透明度的圆形区域
-    gl_FragColor = vec4(0.7, 1.0, 1.0, strength * alpha);
+    gl_FragColor = vec4(uColor, strength * alpha);
 }

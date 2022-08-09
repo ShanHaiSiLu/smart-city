@@ -1,15 +1,25 @@
 import * as THREE from "three";
 import camera from "../camera";
 
-import warningImg from "@/assets/warning.png";
-
 export default class AlarmSprite {
-  constructor({ x, y, z }) {
-    const map = new THREE.TextureLoader().load(warningImg);
-    this.material = new THREE.SpriteMaterial({ map });
+  constructor({ x, z }, type = "火警", color = 0x00ffff) {
+    // 不同类型的报警对应不同类型的图标
+    const typeObj = {
+      火警: "./textures/tag/fire.png",
+      治安: "./textures/tag/jingcha.png",
+      电力: "./textures/tag/e.png",
+    };
+    const map = new THREE.TextureLoader().load(typeObj[type]);
+    this.material = new THREE.SpriteMaterial({
+      map,
+      color,
+      blending: THREE.AdditiveBlending,
+      transparent: true,
+      depthTest: false,
+    });
 
     this.mesh = new THREE.Sprite(this.material);
-    this.mesh.position.set(x, y, z);
+    this.mesh.position.set(x, 5, z);
 
     this.ray = new THREE.Raycaster();
     this.mouse = new THREE.Vector2();
@@ -38,5 +48,12 @@ export default class AlarmSprite {
 
   onClick(fn) {
     this.clickArr.push(fn);
+  }
+
+  remove() {
+    this.mesh.remove();
+    this.mesh.removeFromParent();
+    this.mesh.geometry.dispose();
+    this.mesh.material.dispose();
   }
 }
